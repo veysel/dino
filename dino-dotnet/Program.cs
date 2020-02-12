@@ -13,7 +13,7 @@ namespace dino_dotnet
         {
             Console.WriteLine("start");
 
-            HttpClient client = new HttpClient(new HttpClientHandler()
+            HttpClient httpClient = new HttpClient(new HttpClientHandler()
             {
                 UseProxy = false,
                 Proxy = null
@@ -24,19 +24,16 @@ namespace dino_dotnet
 
             for (int i = 0; i < 100; i++)
             {
-                DateTime httpDateFirst = DateTime.Now;
-                var response = await client.GetStringAsync("https://raw.githubusercontent.com/tsopenteam/gundem/master/gundem.json");
-                DateTime httpDateLast = DateTime.Now;
+                var httpStopwatch = Stopwatch.StartNew();
+                var response = await httpClient.GetStringAsync("https://raw.githubusercontent.com/tsopenteam/gundem/master/gundem.json").ConfigureAwait(false);
+                httpStopwatch.Stop();
 
-                DateTime jsonDateFirst = DateTime.Now;
+                var jsonStopwatch = Stopwatch.StartNew();
                 var result = JSON.DeserializeDynamic(response);
-                DateTime jsonDateLast = DateTime.Now;
+                jsonStopwatch.Stop();
 
-                TimeSpan httpTime = httpDateLast - httpDateFirst;
-                TimeSpan jsonTime = jsonDateLast - jsonDateFirst;
-
-                httpTimeList.Add(httpTime.TotalSeconds);
-                jsonTimeList.Add(jsonTime.TotalSeconds);
+                httpTimeList.Add(httpStopwatch.Elapsed.TotalSeconds);
+                jsonTimeList.Add(jsonStopwatch.Elapsed.TotalSeconds);
 
                 Console.WriteLine($"{i + 1} Http : {httpTimeList[i]}");
                 Console.WriteLine($"{i + 1} Json : {jsonTimeList[i]}");
