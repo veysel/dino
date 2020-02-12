@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Jil;
 using System.Linq;
+using System.Diagnostics;
 
 namespace dino_dotnet
 {
