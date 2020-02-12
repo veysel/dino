@@ -13,8 +13,12 @@ namespace dino_dotnet
         {
             Console.WriteLine("start");
 
-            HttpClient client = new HttpClient();
-
+            HttpClient client = new HttpClient(new HttpClientHandler()
+            {
+                UseProxy = false,
+                Proxy = null
+            });
+            
             List<double> httpTimeList = new List<double>();
             List<double> jsonTimeList = new List<double>();
 
